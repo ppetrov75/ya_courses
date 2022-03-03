@@ -10,4 +10,5 @@ add_executable(yellow_belt
 #        regions_base.cpp
 #        task_tracker.cpp
 #        sqr_template.cpp
-        get_ref.cpp)
+#        get_ref.cpp
+        unit_test_example.cpp)
