@@ -3,10 +3,8 @@
 #include <random>
 #include <algorithm>
 #include <cmath>
-#include <vector>
 #include <numeric>
 #include <functional>
-#include <iterator>
 #include <iomanip>
 
 std::vector<int> generate_random_values(int max_value = 1, int min_value = 0, int range = 1) {
