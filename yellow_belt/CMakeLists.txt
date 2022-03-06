@@ -24,4 +24,5 @@ add_executable(yellow_belt
 #        find_nearest_element.cpp
 #        change_firstlast_name.cpp
 #        find_start_with_ch.cpp
-        build_exp.cpp)
+#        build_exp.cpp
+        eval_exp_shunting_yard.cpp)
