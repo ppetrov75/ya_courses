@@ -1,5 +1,3 @@
-#pragma once
-
 #ifndef YELLOW_BELT_DATE_H
 #define YELLOW_BELT_DATE_H
 

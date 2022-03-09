@@ -15,7 +15,8 @@ Date::Date(const std::string &s) {
     for(std::string line; std::getline(is, line, '-'); ) {
         v.push_back(std::stoi(line));
     }
-    assert(v.size() == 3);
+    if(v.size() != 3)
+        throw std::logic_error(s + std::string (" v.size: " + v.size()));
     std::tie(y_, m_, d_) = {v[0], v[1], v[2]};
     assert(m_ > 0 && m_ <= 12 );
     assert(d_ > 0 && d_ <= 31);
@@ -30,9 +31,13 @@ std::string Date::to_string() const {
 }
 
 Date ParseDate(std::istream &is) {
-    std::string s;
-    std::getline(is, s, ' ');
-    return {s};
+    int year, month, day;
+    is >> year;
+    is.ignore(1);
+    is >> month;
+    is.ignore(1);
+    is >> day;
+    return {year, month, day};
 }
 
 std::ostream &operator<<(std::ostream &os, const Date &date) {
