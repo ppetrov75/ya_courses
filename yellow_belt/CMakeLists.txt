@@ -28,4 +28,13 @@ add_executable(yellow_belt
 #        eval_exp_shunting_yard.cpp
 #        animal.cpp
 #        notifier.cpp
-        figures.cpp)
+#        figures.cpp
+        # week6 task's files:
+        source_w6/main.cpp
+        source_w6/date.cpp source_w6/date.h
+        source_w6/database.cpp source_w6/database.h
+        source_w6/condition_parser.cpp source_w6/condition_parser.h
+        source_w6/token.cpp source_w6/token.h
+        source_w6/node.cpp source_w6/node.h
+        source_w6/condition_parser_test.cpp
+        source_w6/event.cpp source_w6/event.h source_w6/test_runner.cpp source_w6/test_runner.h source_w6/unit_tests.cpp source_w6/unit_tests.h)
