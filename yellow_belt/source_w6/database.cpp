@@ -4,27 +4,25 @@
 constexpr char sep = '-';
 
 void Database::Print(std::ostream &os) {
-    for(auto const& el : db_) {
+    for (auto const &el : db_) {
         auto date = el.first;
         os << date << " " << el.second.first << std::endl;
     }
 }
 
 void Database::Add(const Date &date, const std::string &event) {
-    if (db_.count(date) == 0) {
-        db_.insert({date, {event, 0}});
-    } else {
+    auto cnt = db_.count(date);
+
+    if (cnt) {
         auto it_up = db_.upper_bound(date);
         auto it_low = db_.lower_bound(date);
-        for(auto it = it_low; it != it_up; ++it) {
+        for (auto it = it_low; it != it_up; ++it) {
             if (it->second.first == event)
                 return;
         }
-        std::string s;
-        int cnt;
-        std::tie(s, cnt) = std::prev(it_up)->second;
-        db_.insert({date, {event, ++cnt}});
     }
+
+    db_.insert({date, {event, cnt}});
 }
 
 std::string Database::Last(Date date) {
