@@ -18,9 +18,15 @@ add_executable(red_belt
 #        w1/paginator.cpp
 
 #        w2/main.cpp
-        test_runner.h
 #        w2/sort_students.cpp
 #        w2/learner.cpp
 #        w2/express_route.cpp
 #        w2/read_manager.cpp
-        w2/hotel_book.cpp)
+#        w2/hotel_book.cpp
+
+        test_runner.h
+#        w3/object_pool.cpp
+#        w3/swap_sort_copy.cpp
+#        w3/simple_vector.cpp w3/simple_vector.h
+        w3/linked_list.cpp
+        )
