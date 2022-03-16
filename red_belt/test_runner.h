@@ -95,10 +95,16 @@ private:
     int fail_count = 0;
 };
 
-#define ASSERT_EQUAL(x, y) {        \
-ostringstream _os__var;                   \
-_os__var << __FILE__ << ":" << __LINE__ ; \
-AssertEqual (x, y, _os__var.str());       \
+#define ASSERT_EQUAL(x, y) {              \
+ostringstream _os_AEQ_var;                \
+_os_AEQ_var << __FILE__ << ":" << __LINE__ ; \
+AssertEqual (x, y, _os_AEQ_var.str());       \
+}
+
+#define ASSERT(x) {                       \
+ostringstream _os_ART_var;                \
+_os_ART_var << __FILE__ << ":" << __LINE__ ; \
+Assert (x, _os_ART_var.str());       \
 }
 
 #define RUN_TEST(tr, func)     \

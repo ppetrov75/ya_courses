@@ -16,4 +16,11 @@ add_executable(red_belt
 #        w1/table.cpp
 #        w1/Deque.h w1/DequeTest.cpp
 #        w1/paginator.cpp
-        w2/main.cpp)
+
+#        w2/main.cpp
+        test_runner.h
+#        w2/sort_students.cpp
+#        w2/learner.cpp
+#        w2/express_route.cpp
+#        w2/read_manager.cpp
+        w2/hotel_book.cpp)
