@@ -28,5 +28,14 @@ add_executable(red_belt
 #        w3/object_pool.cpp
 #        w3/swap_sort_copy.cpp
 #        w3/simple_vector.cpp w3/simple_vector.h
-        w3/linked_list.cpp
+#        w3/linked_list.cpp
+
+#        w4/main.cpp
+#        w4/athlete_numbers.cpp
+#        w4/stack_vector.cpp w4/stack_vector.h
+#        w4/translator.cpp
+#        w4/airport_counter.cpp
+#        w4/airport_example.cpp
+#        w4/text_editor.cpp
+#        w4/server_stats.cpp
         )
