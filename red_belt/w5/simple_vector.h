@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdlib>
+#include <algorithm>
 
 // Реализуйте шаблон SimpleVector
 template<typename T>
@@ -28,7 +29,15 @@ public:
         return m_data;
     }
 
+    const T *begin() const {
+        return m_data;
+    }
+
     T *end() {
+        return m_data + m_size;
+    }
+
+    const T *end() const {
         return m_data + m_size;
     }
 
@@ -58,6 +67,22 @@ public:
         }
 
         m_data[m_size++] = value;
+    }
+
+    // swap ?
+    SimpleVector &operator=(const SimpleVector &other) {
+        if (this != &other) {
+            if (m_data && (m_capacity < other.m_capacity) ||
+               (m_data == nullptr)) {
+                if (m_data)
+                    delete[] m_data;
+                m_data = new T(other.m_capacity);
+                m_capacity = other.m_capacity;
+            }
+            std::copy(other.begin(), other.end(), begin());
+            m_size = other.m_size;
+        }
+        return *this;
     }
 
 private:

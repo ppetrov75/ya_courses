@@ -1,4 +1,4 @@
-#include "../w5/simple_vector.h"
+#include "simple_vector_2.h"
 #include "../test_runner.h"
 
 #include <algorithm>
@@ -33,13 +33,39 @@ void TestPushBack() {
     sort(begin(v), end(v));
 
     const vector<int> expected = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    ASSERT_EQUAL(v.Size(), expected.size());
     ASSERT(equal(begin(v), end(v), begin(expected)));
+}
+
+class StringNonCopyable : public string {
+public:
+    using string::string;
+
+    explicit StringNonCopyable(string &&other) : string(move(other)) {}
+
+    StringNonCopyable(const StringNonCopyable &) = delete;
+
+    StringNonCopyable(StringNonCopyable &&) = default;
+
+    StringNonCopyable &operator=(const StringNonCopyable &) = delete;
+
+    StringNonCopyable &operator=(StringNonCopyable &&) = default;
+};
+
+void TestNoCopy() {
+    SimpleVector<StringNonCopyable> strings;
+    static const int SIZE = 10;
+    for (int i = 0; i < SIZE; ++i) {
+        strings.PushBack(StringNonCopyable(to_string(i)));
+    }
+    for (int i = 0; i < SIZE; ++i) {
+        ASSERT_EQUAL(strings[i], to_string(i));
+    }
 }
 
 int main() {
     TestRunner tr;
     RUN_TEST(tr, TestConstruction);
     RUN_TEST(tr, TestPushBack);
+    RUN_TEST(tr, TestNoCopy);
     return 0;
 }

@@ -2,6 +2,11 @@ cmake_minimum_required(VERSION 3.17)
 project(red_belt)
 
 set(CMAKE_CXX_STANDARD 17)
+#set(CMAKE_VERBOSE_MAKEFILE ON)
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fno-omit-frame-pointer  -fbounds-check  -g -O1")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fno-omit-frame-pointer  -fbounds-check  -fsanitize=undefined,shift,integer-divide-by-zero,signed-integer-overflow,bounds -g -O1")
+
+#find_package(Threads)
 
 add_executable(red_belt
 #        w1/main.cpp
@@ -38,4 +43,22 @@ add_executable(red_belt
 #        w4/airport_example.cpp
 #        w4/text_editor.cpp
 #        w4/server_stats.cpp
+
+#        w5/main.cpp
+#        w5/josephus_permutation.cpp
+#        w5/group_heavy_strings.cpp
+#        w5/simple_vector_copy_assignment.cpp
+#        w5/split_into_sentences.cpp
+#        w5/simple_vector_2.cpp
+#        w5/merge_sort_3.cpp
+#        w5/priority_collection_2.cpp
+#        w5/async_example.cpp
+#        w5/execution_example.cpp
+#        w5/matrix_sum.cpp
+#        w5/explore_key_words.cpp
+        w5/synchronized.cpp
+#        w5/concurrent_map.cpp
         )
+
+
+target_link_libraries(red_belt pthread tbb)
