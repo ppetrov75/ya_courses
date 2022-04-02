@@ -58,8 +58,9 @@ add_executable(red_belt
 #        w5/explore_key_words.cpp
 #        w5/synchronized.cpp
 #        w5/concurrent_map.cpp
-#        w6/main.cpp w6/parse.cpp w6/search_server.cpp
-        w6/tmp.cpp
+        w6/main.cpp w6/parse.cpp w6/search_server.cpp
+        w6/profile_advanced.cpp
+#        w6/tmp.cpp
         )
 
 

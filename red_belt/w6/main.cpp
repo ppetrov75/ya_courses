@@ -209,3 +209,10 @@ int main() {
     RUN_TEST(tr, TestRanking);
     RUN_TEST(tr, TestBasicSearch);
 }
+
+//  Build results: 0 ms
+//  Sorting: 0 ms
+//  Lookup: 0 ms
+//  Words split: 0 ms
+//  Total loop iteration: 0 ms
+//TestSerpFormat OK
