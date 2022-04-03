@@ -6,6 +6,7 @@
 #include <iterator>
 #include <sstream>
 #include <iostream>
+#include <numeric>
 
 vector<string> SplitIntoWords(const string &line) {
     istringstream words_input(line);
@@ -35,6 +36,11 @@ void SearchServer::AddQueriesStream(
     TotalDuration sorting("  Sorting");
     TotalDuration build_results("  Build results");
 
+    auto docs_size = index.GetDocuments().size();
+    vector<std::size_t> docid_count(docs_size);
+    // compare   -l > -r
+    vector<int64_t> docids(docs_size);
+
     for (string current_query; getline(query_input, current_query);) {
         ADD_DURATION(total_iteration);
         vector<string> words;
@@ -44,7 +50,7 @@ void SearchServer::AddQueriesStream(
             words = SplitIntoWords(current_query);
         }
 
-        map<size_t, size_t> docid_count;
+        docid_count.assign(docid_count.size(), 0);
         {
             ADD_DURATION(lookup);
             for (const auto &word : words) {
@@ -54,28 +60,23 @@ void SearchServer::AddQueriesStream(
             }
         }
 
-        vector<pair<size_t, size_t>> search_results(
-                docid_count.begin(), docid_count.end()
-        );
-
+        std::iota(docids.begin(), docids.end(), 0);
         {
             ADD_DURATION(sorting);
             sort(
-                    begin(search_results),
-                    end(search_results),
-                    [](pair<size_t, size_t> lhs, pair<size_t, size_t> rhs) {
-                        int64_t lhs_docid = lhs.first;
-                        auto lhs_hit_count = lhs.second;
-                        int64_t rhs_docid = rhs.first;
-                        auto rhs_hit_count = rhs.second;
-                        return make_pair(lhs_hit_count, -lhs_docid) > make_pair(rhs_hit_count, -rhs_docid);
+                    begin(docids),
+                    end(docids),
+                    [&docid_count](int64_t lhs, int64_t rhs) {
+                        return make_pair(docid_count[lhs], -lhs) > make_pair(docid_count[rhs], -rhs);
                     }
             );
         }
 
         ADD_DURATION(build_results);
         search_results_output << current_query << ':';
-        for (auto[docid, hitcount] : Head(search_results, 5)) {
+        for (const auto& docid : Head(docids, 5)) {
+            const auto& hitcount = docid_count[docid];
+            if(!hitcount) continue; // break; ?
             search_results_output << " {"
                                   << "docid: " << docid << ", "
                                   << "hitcount: " << hitcount << '}';
@@ -93,7 +94,7 @@ void InvertedIndex::Add(const string &document) {
     }
 }
 
-list<size_t> InvertedIndex::Lookup(const string &word) const {
+vector<size_t> InvertedIndex::Lookup(const string &word) const {
     if (auto it = index.find(word); it != index.end()) {
         return it->second;
     } else {
