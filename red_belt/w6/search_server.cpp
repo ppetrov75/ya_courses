@@ -1,6 +1,5 @@
 #include "search_server.h"
 #include "iterator_range.h"
-#include "profile_advanced.h"
 
 #include <algorithm>
 #include <iterator>
@@ -30,53 +29,37 @@ void SearchServer::UpdateDocumentBase(istream &document_input) {
 void SearchServer::AddQueriesStream(
         istream &query_input, ostream &search_results_output
 ) {
-    TotalDuration total_iteration("  Total loop iteration");
-    TotalDuration words_split("  Words split");
-    TotalDuration lookup("  Lookup");
-    TotalDuration sorting("  Sorting");
-    TotalDuration build_results("  Build results");
-
     auto docs_size = index.GetDocuments().size();
     vector<std::size_t> docid_count(docs_size);
     // compare   -l > -r
     vector<int64_t> docids(docs_size);
 
     for (string current_query; getline(query_input, current_query);) {
-        ADD_DURATION(total_iteration);
         vector<string> words;
 
-        {
-            ADD_DURATION(words_split);
-            words = SplitIntoWords(current_query);
-        }
+        words = SplitIntoWords(current_query);
 
         docid_count.assign(docid_count.size(), 0);
-        {
-            ADD_DURATION(lookup);
-            for (const auto &word : words) {
-                for (const size_t docid : index.Lookup(word)) {
-                    docid_count[docid]++;
-                }
+        for (const auto &word : words) {
+            for (const size_t docid : index.Lookup(word)) {
+                docid_count[docid]++;
             }
         }
 
         std::iota(docids.begin(), docids.end(), 0);
-        {
-            ADD_DURATION(sorting);
-            sort(
-                    begin(docids),
-                    end(docids),
-                    [&docid_count](int64_t lhs, int64_t rhs) {
-                        return make_pair(docid_count[lhs], -lhs) > make_pair(docid_count[rhs], -rhs);
-                    }
-            );
-        }
+        // TODO partial_sort
+        sort(
+                begin(docids),
+                end(docids),
+                [&docid_count](int64_t lhs, int64_t rhs) {
+                    return make_pair(docid_count[lhs], -lhs) > make_pair(docid_count[rhs], -rhs);
+                }
+        );
 
-        ADD_DURATION(build_results);
         search_results_output << current_query << ':';
-        for (const auto& docid : Head(docids, 5)) {
-            const auto& hitcount = docid_count[docid];
-            if(!hitcount) continue; // break; ?
+        for (const auto &docid : Head(docids, 5)) {
+            const auto &hitcount = docid_count[docid];
+            if (!hitcount) continue; // break; ?
             search_results_output << " {"
                                   << "docid: " << docid << ", "
                                   << "hitcount: " << hitcount << '}';
